@@ -1,0 +1,77 @@
+<HTML>
+
+<!-- Mirrored from shymanovsky.mooo.com/bezo.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 31 Jan 2025 08:09:54 GMT -->
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=koi8-r">
+<TITLE>(с)*** JES 2020 *** Юрий Шимановский</TITLE>
+</HEAD>
+<body bgcolor=#ffffffff>
+</font>
+<PRE>
+Введение.
+
+Сеть yggdrasil доступна в России для многочисленного среднего класса - бомжей, 
+наркоманов, правозащитников, гомосексуалов и диссидентов. Но всякий ли из 
+них знает о дырах в защите, которые предоставляет эта сеть? Запустив yggdrasil вы
+открываете все порты на своей машине, даже если она закрыта файрволом где-то
+на уровне роутера или провайдера. Вот понятная инструкция по установке
+защиты.. Все команды ниже нужно выпулнять от рута.
+
+
+1. Убираем все правила, если надо. Если не знаете - тоже убираем.
+<b>
+ip6tables -P INPUT ACCEPT
+ip6tables -P FORWARD ACCEPT
+ip6tables -P OUTPUT ACCEPT
+ip6tables -t nat -F
+ip6tables -t mangle -F
+ip6tables -F
+ip6tables -X
+</b>
+2. Устанавливаем защиту от дураков. В данном случае мы оставляем открытыми
+только ssh и http порты. Все остальные закрываем.
+<b>
+ip6tables -P INPUT DROP
+ip6tables -P FORWARD DROP
+ip6tables -P OUTPUT ACCEPT
+ip6tables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+ip6tables -I INPUT 1 -i lo -j ACCEPT
+ip6tables -A INPUT -p icmpv6 -j ACCEPT
+ip6tables -A INPUT -p tcp --dport 80 -j ACCEPT
+ip6tables -A INPUT -p tcp --dport 22 -j ACCEPT
+</b>
+3. Проверяем. Должно показать примерно то же самое, но другими словами.
+<b>
+ip6tables -L
+</b>
+4. Теперь эту конфигурацию нужно сохранить.
+<b>
+ip6tables-save > /etc/ip6tables.conf
+</b>
+5. Готово. Для того, чтобы поднять защиту, сразу после старта системы нужно
+выполнить команду
+<b>
+ip6tables-restore < /etc/ip6tables.conf
+</b>
+Заключение
+
+Некоторые системы, например Федора или RH имеют сервис iptables.service,
+который стартует при загрузке и устанавливает файрвол по своему усмотрению.
+Если вы за НАТом, то это дело можно смело отключить. Можно также дополнить
+этот стандартный сервис тем, что я написал выше. Но это уже не для
+домохозяек. Важность защиты можно проиллюстировать следующим примером.
+Один мой знакомый, известный диссидент и правозащитник через сеть yggdrasil
+бросил вызов Владимиру Путину. На том же компьютере он держал детское
+порно, базу данных с украденными номерами кредитных карт и телефоны платных 
+киллеров. Этого человека заблокировали, посадили и изнасиловали бутылкой от 
+шампанского. Причем донышком, а не так ка вы подумали. Разбирательство
+показало, что на его компьютере не был установлен файрвол для ipv6.
+</PRE>
+<center>
+<a href="continue.html">Назад</a>|<a href="index-2.html">На главную</a>
+</center>
+
+</body>
+
+<!-- Mirrored from shymanovsky.mooo.com/bezo.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 31 Jan 2025 08:09:54 GMT -->
+</HTML>

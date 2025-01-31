@@ -1,0 +1,116 @@
+<HTML>
+
+<!-- Mirrored from shymanovsky.mooo.com/toronion.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 31 Jan 2025 08:09:54 GMT -->
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=koi8-r">
+<TITLE>(с)*** JES 2020 *** Юрий Шимановский</TITLE>
+</HEAD>
+<body bgcolor=#ffffffff>
+</font>
+<center><table  WIDTH="80%" > <tr> <td><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+<center><h1>Организация onion сервера</h1></center>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Для начала я кратко обозначу, какая польза постигнет вас, если вы организуете свой собственный onion сервер. <br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1. У вашего сервера не будет IP. Он работает без DNS. Есть только неказистое имя, вроде
+<b>ma3hqhoccgsy5cwdtfpdorwgryarlgq63da2fy4xpgrouqmw2f77wkid.onion</b> Вы не можете выбрать себе имя, зато его можно менять хоть каждый день. Вам не потребуется никакая регистрация. Сервер будет доступен под новым именем уже в следующую минуту. Некрасивость имени пускай вас не смущает. Все равно в сети используются гиперссылки, где имя явно не показывается. <br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2. Сайт будет виден, даже если у вашего компьютера
+"черный IP", не видимый из внешнего мира. В этой сети понятие IP вообще отсутствует как вид. <br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3. Сайт будет виден, даже если ваш провайдер заблокировал все входящие соединения из интернета к вам. <br>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4. Сайт будет виден, если вы включите свой комп в любую чужую сеть. Вам ничего не нужно перестраивать. Он просто заработает. <br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5. Никто не узнает, где физически находится ваш сайт. Но и вы тоже не сможете понять, кто его посещает. Все соединения выглядеть так, будто заходят с вашего же компьютера. Все Фантомасы, но и вы тоже Фантомас. <br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Данная инструкция предназначена для линукса Debian, Ubuntu и похожих. Она вообще подойдет для любого юникса с незначительными нюансами. В качестве веб сервера используется Apache2. Можно использовать Nginx или что-то иное, но опять же отличия будут незначительными. <br>
+<center><h2>Установка софта</h2></center>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Предполагается, что у вас уже установлены sshd и apache. К сети onion они не относятся, поэтому установку мы пропустим. Теперь нам потребуется установть Tor: <br>
+<br>
+<center>
+<textarea style="color: lightblue; background-color: black; WIDTH: 800; HEIGHT: 30px">
+apt-get install tor 
+</textarea></center><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Здесь и далее все команды нужно выполнять, зайдя в сиситему как root, а установку софта, кстати, мы уже закончили. Проверьте, что tor заработал. <br>
+<br>
+<center>
+<textarea style="color: lightblue; background-color: black; WIDTH: 800; HEIGHT: 30px">
+ps ax | grep tor 
+</textarea></center>
+<center><h2>Настройка сервисов</h2></center>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Откройте текстовым редактором файл
+<b>/etc/tor/torrc</b> И впишите следующие строчки: <br>
+<br><center>
+<textarea style="color: lightblue; background-color: black; WIDTH: 800; HEIGHT:
+80px">
+HiddenServiceDir /var/lib/tor/matumba 
+HiddenServicePort 80 127.0.0.1:80 
+HiddenServicePort 22 127.0.0.1:22 
+</textarea></center><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Похожее уже есть в конфигурации, закомментрованное. Вам нужно лишь поправить. <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>HiddenServiceDir</b> - каталог где будут настройки onion сервера. Предположим, что ваш сервер называтся matumba. Имя может быть любым. Его все равно никто не увидит. <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>HiddenServicePort</b> - тут мы указываем, какие сервисы открыть - sshd и httpd. <br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Теперь перезапустите tor: <br>
+<br><center>
+<textarea style="color: lightblue; background-color: black; WIDTH: 800;HEIGHT:40px">
+systemctl stop tor 
+systemctl start tor
+</textarea></center></br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Если все пошло по плану, то в системе создался каталог
+<b>/var/lib/tor/matumba</b> Заглянем в него. Файл <b>hostname</b> содержит имя вашего сайта:
+<b>ma3hqhoccgsy5cwdtfpdorwgryarlgq63da2fy4xpgrouqmw2f77wkid.onion</b> или вроде того. 
+<center><h2>Включение сервисов</h2></center>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Поздравляю! ssh сервер у вас уже есть. Можете проверить сами, если не верите. <br>
+<br><center>
+<textarea style="color: lightblue; background-color: black; WIDTH: 800; HEIGHT: 30px">
+torsocks ssh ВашеИмя@ma3hqhoccgsy5cwdtfpdorwgryarlgq63da2fy4xpgrouqmw2f77wkid.onion
+</textarea></center></br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Точно так же вы будете заходить на свой сервер из внешнего интернета. <br>
+<br>
+<center><h3>Теперь делаем веб сервер.</h3></center>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Создаем каталог
+<b>/var/www/matumba</b> с правами <b>755</b>. Здесь будет корень вашего сайта. Сделайте там тестовую страничку: <br>
+<br><center>
+<textarea style="color: lightblue; background-color: black; WIDTH: 800; HEIGHT: 30px">
+echo "Beware of dragons" > index.html
+</textarea></center></br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Создайте файл
+<b>/etc/apache2/sites-available/matumba.conf</b> и выполните конфигурацию вашего сайта. Самая простая конфигурация будет такой: <br>
+<br>
+<center>
+<textarea style="color: lightblue; background-color: black; WIDTH: 800; HEIGHT:
+80px">
+<VirtualHost *:80> 
+ServerName ma3hqhoccgsy5cwdtfpdorwgryarlgq63da2fy4xpgrouqmw2f77wkid.onion 
+DocumentRoot /var/www/matumba 
+</VirtualHost> 
+</textarea></center></br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Включаем новый сайт в сеть: <br>
+<br>
+<center>
+<textarea style="color: lightblue; background-color: black; WIDTH: 800; HEIGHT:
+40px">
+a2ensite matumba 
+systemctl reload apache2 
+</textarea></center></br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Готово. Ваш сайт
+<b>http://ma3hqhoccgsy5cwdtfpdorwgryarlgq63da2fy4xpgrouqmw2f77wkid.onion</b> виден через Tor Browser. Проверяем из командной строки: <br>
+<br><center>
+<textarea style="color: lightblue; background-color: black; WIDTH: 800; HEIGHT:
+70px">
+my@host:~$ torsocks wget -q ma3hqhoccgsy5cwdtfpdorwgryarlgq63da2fy4xpgrouqmw2f77wkid.onion -O -
+Beware of dragons
+my@host:~$
+</textarea></center></br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;При необходимости вы можете перенести свой сервер на другой хост, не потеряв имя. Для этого скопируйте файл
+<b>/etc/tor/torrc</b> и каталог <b>/var/lib/tor/matumba</b> на новое место. 
+<br><br></tr> </table></center>
+<center>
+<a href="continue.html">Назад</a>|<a href="index-2.html">На главную</a>
+</center>
+</body>
+
+<!-- Mirrored from shymanovsky.mooo.com/toronion.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 31 Jan 2025 08:09:54 GMT -->
+</HTML>

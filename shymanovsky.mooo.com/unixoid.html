@@ -1,0 +1,46 @@
+<HTML>
+
+<!-- Mirrored from shymanovsky.mooo.com/unixoid.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 31 Jan 2025 08:09:54 GMT -->
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=koi8-r">
+<TITLE>(с)*** JES 2016 *** Юрий Шимановский</TITLE>
+</HEAD>
+<body bgcolor=#ffffffff>
+</font>
+<PRE>
+                    Подключение Яндекс-диска в Линуксе
+
+Многие спрашивают подробности о подключении Яндекс диска для работы из
+ командной строки. Диск яндекса - это файловая система <b>davfs</b>. В KDE 
+она видна сразу из файлового менеджера. Хелп есть на сайте. А для работы с 
+шеллом, потребуется три шага:
+
+1. Устанавливаем поддержку файловой системы:
+<b>sudo yum install davfs2</b>
+
+2. Прописываем в удаленных настройках ваши имя и пароль с Яндекса:
+В файле <b>/etc/davfs2/secrets</b> вставляем строку:
+<b>https://webdav.yandex.ru:443 логин пароль</b>
+Обратите внимание, что нужно обязательно написать <b>https://</b> в начале,
+иначе будете долго долбиться головой в монитор (как это было со мной)
+
+3. В файле <b>/etc/fstab</b> прописываем локальные настройки
+<b>https://webdav.yandex.ru:443/ /yandex davfs defaults,noauto,uid=UID,gid=GID 0 0 </b>
+Здесь <b>/yandex</b> - каталог с аттрибутами 777, куда будет монтироваться
+диск. UID и GID - ваше имя и группа в локальной машине.
+
+Готово. Диск можно монтировать командой
+<b>sudo mount /yandex</b>
+
+Для гурманов. Можно вообще ничего нигде не прописывать и монтировать диск
+командой
+<b>sudo mount.davfs -o uid=UID,gid=GID,rw https://webdav.yandex.ru:443/ /yandex</b>
+Имя и пароль с Яндекса оно спросит само. Но это геморойно.
+</PRE>
+<center>
+<a href="continue.html">Назад</a>|<a href="index-2.html">На главную</a>
+</center>
+</body>
+
+<!-- Mirrored from shymanovsky.mooo.com/unixoid.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 31 Jan 2025 08:09:54 GMT -->
+</html>

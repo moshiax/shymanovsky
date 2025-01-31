@@ -1,0 +1,37 @@
+<HTML>
+
+<!-- Mirrored from shymanovsky.mooo.com/crypt.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 31 Jan 2025 08:09:54 GMT -->
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=koi8-r">
+<TITLE>(с)*** JES 2016 *** Юрий Шимановский</TITLE>
+</HEAD>
+<body bgcolor=#ffffffff>
+</font>
+<PRE>
+Шифрование файлов в Юникс-системах.
+
+<b>Верховный суд США одобрил поправки в законодательство, дающие
+правоохранительным органам право на доступ к компьютерам, находящимся в
+любом месте, даже за границей.</b>
+<a
+href="http://www.bbc.com/russian/international/2016/04/160429_us_supreme_court_remote_search">(с)Би-Би-Си</a>
+
+В связи с этим вот что хочу сказать. Надежное шифрование файлов делается так:
+
+<b>openssl enc -e -aes-256-cbc -md sha256 -in FILE -out CRYPTFILE</b>
+Где FILE - это исходный файл, а CRYPTFILE - зашифрованный результат.
+
+Расшифровка:
+<b>openssl enc -d -aes-256-cbc -md sha256 -in CRYPTFILE -out FILE</b>
+
+Пароль вам предложат ввести.
+Конечно, шифрующих программ очень много, но этот будет работать везде и
+всегда. Скажем, вы можете шифровать файл в IBM AIX, а расшифровать в Убунте
+или OpenBSD. Ничего устанавливать не нужно, это вcтроено в Юниксы.</PRE>
+<center>
+<a href="continue.html">Назад</a>|<a href="index-2.html">На главную</a>
+</center>
+</body>
+
+<!-- Mirrored from shymanovsky.mooo.com/crypt.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 31 Jan 2025 08:09:54 GMT -->
+</html>

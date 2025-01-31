@@ -1,0 +1,67 @@
+<HTML>
+
+<!-- Mirrored from shymanovsky.mooo.com/skype.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 31 Jan 2025 08:09:54 GMT -->
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=koi8-r">
+<TITLE>(с)*** JES 2018 *** Юрий Шимановский</TITLE>
+</HEAD>
+<body bgcolor=#ffffffff>
+</font>
+<PRE>
+
+                     Конфликт skype и pulseaudio
+
+В последних версиях skype на Линуксе замечен глюк. Не работает встроеный 
+микрофон. Причем, внешний работает нормально. На эту ошибку часто жалуются 
+в сети, но решения никто не предлагает. Разработчики skype признают, 
+что проблема имеется, но как починить, похоже, сами не знают. Одним словом, 
+за дело пришлось взяться мне. 
+
+Ошибка возникает из за конфликта skype и системой звуковой поддержки pulseaudio.
+ Лечится это так.
+
+1. Останавливаем pulseaudio:
+<b>systemctl --user stop pulseaudio.socket
+systemctl --user stop pulseaudio.service</b>
+
+2. Запускаем Skype. Идем в настройки и выбираем микрофон - физическую звуковую 
+карту. Это нужно сделать только один раз. Потом все будет работать.
+
+3. Поскольку мы остановили pulseaudio, то у нас в компьютере пропал движок 
+громкости записи - воспроизведения. Поэтому.
+
+4. Выполняем команду
+<b>alsamixer</b> 
+и настраиваем громкости прямо на звуковой карточке. Там тоже куча движков, 
+но вы разберетесь.
+
+5. Сохраняем эти настройки в файл:
+<b>alsactl --file ~/etc/asound.state store</b>
+Опять же, это делается только один раз.
+
+6. Проверяем, что skype работает. Выходим и перезапускаем pulseaudio:
+<b>systemctl --user start pulseaudio.socket
+systemctl --user start pulseaudio.service
+</b>
+
+Все. Теперь старт скайпа будет прохожить так.
+Запускаем скрипт:
+
+<b>systemctl --user stop pulseaudio.socket
+systemctl --user stop pulseaudio.service
+alsactl --file ~/etc/asound.state restore</b>
+
+Запускаем скайп. Общаемся.
+
+Запускаем скрипт:
+<b>systemctl --user start pulseaudio.socket
+systemctl --user start pulseaudio.service
+
+</PRE>
+<center>
+<a href="continue.html">Назад</a>|<a href="index-2.html">На главную</a>
+</center>
+</body>
+
+<!-- Mirrored from shymanovsky.mooo.com/skype.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 31 Jan 2025 08:09:54 GMT -->
+</html>

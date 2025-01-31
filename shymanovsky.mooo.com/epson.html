@@ -1,0 +1,54 @@
+<HTML>
+
+<!-- Mirrored from shymanovsky.mooo.com/epson.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 31 Jan 2025 08:09:54 GMT -->
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=koi8-r">
+<TITLE>(с)*** JES 2016 *** Юрий Шимановский</TITLE>
+</HEAD>
+<body bgcolor=#ffffffff>
+</font>
+<PRE>
+Оставлю здесь методичку, как прикрутить сетевой Эпсоновский принтер XP-310 к
+Линуксу (Федора).Почему - то разработчики поленились положить линуксовый софт на CD.
+И его нужно забирать с сайта <a href="http://epson.com/">http://epson.com</a>
+
+1. Принтер
+Fedora:
+Устанавливаем <b>epson-inkjet-printer-201303w-1.0.0-1lsb3.2.x86_64.rpm</b>
+А потом добавляем в систему принтер через стандартный интерфейс.
+Подразумевается, что принтер уже в сети. Надо будет указать его IP
+
+Debian:
+Ничего не устанавливаем. Просто подключаем командой
+<b>system-config-printer</b>
+
+2. Сканер.
+Устанавливаем
+
+Fedora:
+<b>iscan-2.30.0-1.usb0.1.ltdl7.x86_64.rpm
+iscan-data-1.33.0-1.noarch.rpm
+iscan-network-nt-1.1.1-1.x86_64.rpm</b>
+
+Debian:
+Отсюда <a
+href="http://support.epson.net/linux/en/iscan_c.html">http://support.epson.net/linux/en/iscan_c.html</a> скачиваем файл
+<b>iscan-bundle-1.0.0.x64.deb.tar.gz</b>
+Открываем и запускаем <b>sudo ./install.sh</b> 
+Это установит драйвера и программу <b>iscan</b> 
+
+В файле <b>/etc/sane.d/epkowa.conf</b> прописываем IP сканера:
+<b>net 192.168.0.103</b>
+И в файле <b>/etc/sane.d/net.conf
+192.168.0.103</b>
+
+После этого сканить можно программами <b>iscan</b> или <b>xsane</b>
+Обе хорошие. И я в который раз не понимаю, почему это нельзя было поместить
+на CD и написать в инструкции, как это сделано для Mac и Win</PRE>
+<center>
+<a href="continue.html">Назад</a>|<a href="index-2.html">На главную</a>
+</center>
+</body>
+
+<!-- Mirrored from shymanovsky.mooo.com/epson.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 31 Jan 2025 08:09:54 GMT -->
+</html>

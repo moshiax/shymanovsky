@@ -1,0 +1,62 @@
+<HTML>
+
+<!-- Mirrored from shymanovsky.mooo.com/gban.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 31 Jan 2025 08:09:54 GMT -->
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=koi8-r">
+<TITLE>(с)*** JES 2017 *** Юрий Шимановский</TITLE>
+</HEAD>
+<body bgcolor=#ffffffff>
+</font>
+<PRE>
+<b>Как забанить Гугл на Линуксе:</b>
+
+<i>Не так давно украинцы сами себя забанили в Яндексе. Но самоизоляции они
+не достигли, поскольку выяснилось, что американский поисковик Google тоже
+позволяет искать в Интернете. Украинское правительство не располагает
+квалифицированными специалистами, способными отключить Гугл на Украине.
+Сейчас каждый украинец бьется над вопросом, как забанить себя в Google.
+Вот одно из решений.
+</i>
+
+echo 1 > /proc/sys/net/ipv6/conf/wlan0/disable_ipv6
+route add -net 172.217.0.0 netmask 255.255.0.0 reject
+route add -net 66.94.0.0 netmask 255.255.224.0 reject
+route add -net 216.58.192.0 netmask 255.255.224.0 reject
+route add -net 74.125.0.0 netmask 255.255.0.0 reject
+route add -net 64.233.160.0 netmask 255.255.224.0 reject
+route add -net 209.85.128.0 netmask 255.255.128.0 reject
+route add -net 173.194.0.0 netmask 255.255.0.0 reject
+route add -net 208.54.128.0 netmask 255.255.224.0 reject
+route add -net 208.54.0.0 netmask 255.255.128.0 reject
+route add -net 108.177.0.0 netmask 255.255.128.0 reject
+
+<b>Как разбанить:</b>
+
+echo 0 > /proc/sys/net/ipv6/conf/wlan0/disable_ipv6
+route del -net 172.217.0.0 netmask 255.255.0.0 reject
+route del -net 66.94.0.0 netmask 255.255.224.0 reject
+route del -net 216.58.192.0 netmask 255.255.224.0 reject
+route del -net 74.125.0.0 netmask 255.255.0.0 reject
+route del -net 64.233.160.0 netmask 255.255.224.0 reject
+route del -net 209.85.128.0 netmask 255.255.128.0 reject
+route del -net 173.194.0.0 netmask 255.255.0.0 reject
+route del -net 208.54.128.0 netmask 255.255.224.0 reject
+route del -net 208.54.0.0 netmask 255.255.128.0 reject
+route del -net 108.177.0.0 netmask 255.255.128.0 reject
+
+Первая строчка во обоих скриптах нужна, если у вас работает IPV6. Не
+забудьте указать реальное имя своей сетевой карты. У меня wlan0. У вас может
+быть eth0 и в таком духе.
+Бан не постоянный. После перзагрузки пропадет. Список IP отражает
+гугловские сети в конце 2016 года. С тех пор он мог незначительно
+измениться. Вместо команды "route" можно использовать "iptables",
+однако я предпочитаю первое по причинам, о которых не сообщается.
+
+</PRE>
+<center>
+<a href="continue.html">Назад</a>|<a href="index-2.html">На главную</a>
+</center>
+</body>
+
+<!-- Mirrored from shymanovsky.mooo.com/gban.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 31 Jan 2025 08:09:54 GMT -->
+</html>
